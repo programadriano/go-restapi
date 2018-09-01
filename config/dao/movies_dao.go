@@ -44,12 +44,12 @@ func (m *MoviesDAO) Create(movie Movie) error {
 	return err
 }
 
-func (m *MoviesDAO) Delete(movie Movie) error {
-	err := db.C(COLLECTION).Remove(&movie)
+func (m *MoviesDAO) Delete(id string) error {
+	err := db.C(COLLECTION).RemoveId(id)
 	return err
 }
 
-func (m *MoviesDAO) Update(movie Movie) error {
-	err := db.C(COLLECTION).UpdateId(movie.ID, &movie)
+func (m *MoviesDAO) Update(id string, movie Movie) error {
+	err := db.C(COLLECTION).UpdateId(id, &movie)
 	return err
 }

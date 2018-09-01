@@ -7,7 +7,7 @@ import (
 
 	"github.com/gorilla/mux"
 	. "github.com/programadriano/go-restapi/config"
-	. "github.com/programadriano/go-restapi/dao"
+	. "github.com/programadriano/go-restapi/config/dao"
 	movierouter "github.com/programadriano/go-restapi/router"
 )
 
