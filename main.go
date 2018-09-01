@@ -8,44 +8,27 @@ import (
 	"github.com/gorilla/mux"
 	. "github.com/programadriano/go-restapi/config"
 	. "github.com/programadriano/go-restapi/dao"
-	. "github.com/programadriano/go-restapi/models"
+	movierouter "github.com/programadriano/go-restapi/router"
 )
 
-var config = Config{}
 var dao = MoviesDAO{}
+var config = Config{}
 
-func getAll(w http.ResponseWriter, r *http.Request) {
-	movies, err := dao.getAll()
-	if err != nil {
-		respondWithError(w, http.StatusInternalServerError, err.Error())
-		return
-	}
-	respondWithJson(w, http.StatusOK, movies)
-}
+func init() {
+	config.Read()
 
-func getByID(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "not implemented yet !")
-}
-
-func create(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "not implemented yet !")
-}
-
-func update(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "not implemented yet !")
-}
-
-func delete(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "not implemented yet !")
+	dao.Server = config.Server
+	dao.Database = config.Database
+	dao.Connect()
 }
 
 func main() {
 	r := mux.NewRouter()
-	r.HandleFunc("/api/v1/movies", getAll).Methods("GET")
-	r.HandleFunc("/api/v1/movies/{id}", getByID).Methods("GET")
-	r.HandleFunc("/api/v1/movies", create).Methods("POST")
-	r.HandleFunc("/api/v1/movies", update).Methods("PUT")
-	r.HandleFunc("/api/v1/movies", delete).Methods("DELETE")
+	r.HandleFunc("/api/v1/movies", movierouter.GetAll).Methods("GET")
+	r.HandleFunc("/api/v1/movies/{id}", movierouter.GetByID).Methods("GET")
+	r.HandleFunc("/api/v1/movies", movierouter.Create).Methods("POST")
+	r.HandleFunc("/api/v1/movies/{id}", movierouter.Update).Methods("PUT")
+	r.HandleFunc("/api/v1/movies/{id}", movierouter.Delete).Methods("DELETE")
 
 	var port = ":3000"
 	fmt.Println("Server running in port:", port)
