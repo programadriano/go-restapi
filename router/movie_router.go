@@ -69,17 +69,12 @@ func Update(w http.ResponseWriter, r *http.Request) {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-	respondWithJson(w, http.StatusOK, map[string]string{"result": "success"})
+	respondWithJson(w, http.StatusOK, map[string]string{"result": movie.Name + " atualizado com sucesso!"})
 }
 
 func Delete(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 	params := mux.Vars(r)
-	var movie Movie
-	if err := json.NewDecoder(r.Body).Decode(&movie); err != nil {
-		respondWithError(w, http.StatusBadRequest, "Invalid request payload")
-		return
-	}
 	if err := dao.Delete(params["id"]); err != nil {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return

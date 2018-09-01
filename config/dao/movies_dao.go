@@ -45,11 +45,11 @@ func (m *MoviesDAO) Create(movie Movie) error {
 }
 
 func (m *MoviesDAO) Delete(id string) error {
-	err := db.C(COLLECTION).RemoveId(id)
+	err := db.C(COLLECTION).RemoveId(bson.ObjectIdHex(id))
 	return err
 }
 
 func (m *MoviesDAO) Update(id string, movie Movie) error {
-	err := db.C(COLLECTION).UpdateId(id, &movie)
+	err := db.C(COLLECTION).UpdateId(bson.ObjectIdHex(id), &movie)
 	return err
 }
